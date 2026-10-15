@@ -74,6 +74,7 @@
             </div>
         </div>
         <form class="payment-form" method="POST" action="process_order.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
             <h2 class="payment-title">Payment Process</h2>
 
             <div class="form-section">

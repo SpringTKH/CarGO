@@ -457,7 +457,7 @@
             fetch('rate_car.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `car_id=${encodeURIComponent(selectedCarId)}&rating=${selectedRating}`
+                body: `car_id=${encodeURIComponent(selectedCarId)}&rating=${selectedRating}&csrf_token=${encodeURIComponent('<?= get_csrf_token() ?>')}`
             })
             .then(res => res.text())
             .then(response => {

@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
     require_once 'include/connection.php';
 
     if (!isset($_SESSION['user_id'])) {
@@ -10,6 +12,12 @@
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['car_id'], $_POST['quantity'], $_POST['begin_date'], $_POST['end_date'])) {
         header("Location: booking.php");
         exit;
+    }
+
+    // Phase 2.2: CSRF validation
+    if (!verify_csrf_token()) {
+        http_response_code(403);
+        die("Invalid or missing CSRF token.");
     }
 
     date_default_timezone_set("Asia/Kuala_Lumpur");

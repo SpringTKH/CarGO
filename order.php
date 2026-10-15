@@ -103,6 +103,7 @@
                 <h2>Are you sure you want to cancel this entire order?</h2>
             </div>
             <form method="post" action="delete_whole.php">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                 <input type="hidden" name="order_id" id="wholeOrderId">
                 <button type="submit" id="confirmDeleteBtn">Confirm Cancel</button>
             </form>

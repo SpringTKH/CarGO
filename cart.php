@@ -16,6 +16,12 @@
     unset($_SESSION['delete_message'], $_SESSION['manage_message']);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            http_response_code(403);
+            die("Invalid or missing CSRF token.");
+        }
+
         if (isset($_POST['mode']) && $_POST['mode'] === 'edit') {
             foreach ($_POST['cart'] as $cart_id => $item) {
                 $cart_id = (int)$cart_id;
@@ -118,6 +124,7 @@
                 </h2>
 
                 <form method="POST" id="cartForm">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                     <input type="hidden" name="mode" id="formMode" value="">
                     <table class="cart-table">
                         <thead>

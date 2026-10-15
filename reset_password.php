@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
     require_once "include/connection.php";
 
     $username = $new_password = $confirm_password = "";
@@ -7,7 +9,11 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (isset($_SESSION["username"])) {
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            $reset_err = "Invalid security token. Please refresh the page and try again.";
+        } else {
+            if (isset($_SESSION["username"])) {
             $username = $_SESSION["username"];
         } else {
             if (empty(trim($_POST["username"]))) {
@@ -33,8 +39,9 @@
                 $confirm_password_err = "Passwords do not match.";
             }
         }
+        }
 
-        if (empty($username_err) && empty($new_password_err) && empty($confirm_password_err)) {
+        if (empty($reset_err) && empty($username_err) && empty($new_password_err) && empty($confirm_password_err)) {
             $sql = "SELECT password_hash, user_id FROM users WHERE username = ?";
             if ($stmt = mysqli_prepare($conn, $sql)) {
                 mysqli_stmt_bind_param($stmt, "s", $username);
@@ -87,6 +94,7 @@
     <div class="reset-page">
         <div class="reset-container">
             <form action="#" method="POST" class="reset-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                 <div class ="resetIMG">
                     <div class ="resetLogo"><img src="images/logo.png"></div>
                     <div class ="resetTitle"><h>CarGo Transport Services Sdn. Bhd.</h></div>
@@ -94,7 +102,7 @@
                 <h2 style="font-size: 17px;">Create strong password!</h2>
                 <?php 
                     if(!empty($reset_err)){
-                        echo '<p style="color:red; font-family:sans-serif; font-size:12px;">' . $reset_err . '</p';
+                        echo '<p style="color:red; font-family:sans-serif; font-size:12px;">' . htmlspecialchars($reset_err) . '</p>';
                     }     
                 ?>
                 <span style="color:red; font-family:sans-serif; font-size:12px;"><?php echo $new_password_err; ?></span>

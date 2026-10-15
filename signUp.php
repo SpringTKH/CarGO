@@ -9,7 +9,11 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty(trim($_POST["username"]))) {
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            $username_err = "Invalid security token. Please refresh the page and try again.";
+        } else {
+            if (empty(trim($_POST["username"]))) {
             $username_err = "Please enter a username.";
         } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', trim($_POST["username"]))) {
             $username_err = "Username can only contain letters, numbers, and underscores.";
@@ -97,6 +101,7 @@
                 $confirm_password_err = "Passwords do not match.";
             }
         }
+        }
 
         if (empty($username_err) && empty($password_err) && empty($confirm_password_err)
             && empty($first_name_err) && empty($surname_err) && empty($birthday_err) && empty($email_err)) {
@@ -115,7 +120,9 @@
                 $param_password = password_hash($password, PASSWORD_DEFAULT);
 
                 if (mysqli_stmt_execute($stmt)) {
-                    session_start();
+                    if (session_status() !== PHP_SESSION_ACTIVE) {
+                        session_start();
+                    }
 
                     $new_user_id = mysqli_insert_id($conn);
 
@@ -152,6 +159,7 @@
     <div class="register-page">
         <div class="register-form-container">
             <form class="register-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                 <h2>Sign Up</h2>
                 <?php if ($username_err) echo "<p class='error'>$username_err</p>"; ?>
                 <label for="username">Username</label>

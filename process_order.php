@@ -9,6 +9,12 @@
         exit;
     }
 
+    // Phase 2.2: CSRF validation
+    if (!verify_csrf_token()) {
+        http_response_code(403);
+        die("Invalid or missing CSRF token.");
+    }
+
     $user_id = $_SESSION['user_id'];
     $phone = trim($_POST['phone'] ?? '');
     $payment_method = trim($_POST['payment_method'] ?? '');

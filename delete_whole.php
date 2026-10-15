@@ -1,6 +1,8 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         require_once 'include/connection.php';
 
         // Phase 1: Authentication check
@@ -8,6 +10,13 @@
             header("Location: login.php");
             exit;
         }
+
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            http_response_code(403);
+            die("Invalid or missing CSRF token.");
+        }
+
         $user_id = $_SESSION['user_id'];
 
         $order_id = intval($_POST['order_id']);

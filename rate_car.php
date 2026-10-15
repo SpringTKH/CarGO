@@ -1,6 +1,8 @@
 <?php
     // Phase 1: Authentication check
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
     if (!isset($_SESSION['user_id'])) {
         http_response_code(403);
         echo "Unauthorized";
@@ -9,6 +11,13 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['car_id'], $_POST['rating'])) {
         require_once 'include/connection.php';
+
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            http_response_code(403);
+            echo "Invalid or missing CSRF token.";
+            exit;
+        }
 
         $car_id = intval($_POST['car_id']);
         $submitted_rating = floatval($_POST['rating']);

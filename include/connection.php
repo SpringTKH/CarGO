@@ -2,6 +2,9 @@
 // Prevent mysqli from throwing uncaught exceptions that leak connection arguments or passwords in stack traces
 mysqli_report(MYSQLI_REPORT_OFF);
 
+// Central CSRF protection helper
+require_once __DIR__ . '/csrf.php';
+
 // Helper function to load environment variables from .env file without external dependencies
 if (!function_exists('loadEnvFile')) {
     function loadEnvFile($filePath) {

@@ -84,6 +84,7 @@
                     </div>
 
                     <form action="add_to_cart.php" method="POST" id="booking-form">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                         <input type="hidden" name="car_id" value="<?= htmlspecialchars($car['car_id']) ?>">
 
                         <div class="input-group">

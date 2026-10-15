@@ -139,6 +139,7 @@
             </div>
             
             <form method="post" action="delete_order.php">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                 <input type="hidden" name="order_item_id" id="deleteItemId">
                 <input type="hidden" name="order_id" value="<?= $order_id ?>">
                 <button type="submit" id="confirmDeleteBtn" style="margin-top:10px; padding:5px 15px;">Confirm</button>

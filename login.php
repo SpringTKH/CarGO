@@ -10,7 +10,11 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty(trim($_POST["username"]))) {
+        // Phase 2.2: CSRF validation
+        if (!verify_csrf_token()) {
+            $login_err = "Invalid security token. Please refresh the page and try again.";
+        } else {
+            if (empty(trim($_POST["username"]))) {
             $username_err = "Please enter username.";
         } else {
             $username = trim($_POST["username"]);
@@ -69,6 +73,7 @@
         }
 
         mysqli_close($conn);
+        }
     }
 ?>
 
@@ -85,6 +90,7 @@
     <div class="login-page">
         <div class="login-container">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" class="login-form">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(get_csrf_token()) ?>">
                 <?php
                     $ref = $_GET['redirect'] ?? $_SERVER['HTTP_REFERER'] ?? 'index.php';
                     $ref_path = parse_url($ref, PHP_URL_PATH);
