@@ -1,0 +1,404 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.fullHeader {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: white;
+}
+
+.logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    max-height: 80%;
+    filter: brightness(0.7);
+    display: block;
+}
+
+.title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.title h {
+    font-family: Orbitron;
+    font-style: italic;
+    font-weight: lighter;
+    font-size: 20px;
+    color: #999100;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .title {
+        display: none;
+    }
+}
+
+.logSign {
+    margin: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+.button {
+    padding: 8px 14px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+    background-color: black;
+    color: yellow;
+    border-color: black;
+    transform: scale(1.15);
+}
+
+.login-button {
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+}
+
+.signUp-button {
+    background-color: #999100;
+    color: white;
+}
+
+.welcome-text {
+    margin-right: 10px;
+    font-family: Sansation, 'sans-serif';
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-align: right;
+    font-size: 15px;
+}
+
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+    border: 3px solid #999100;
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.15);
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.profile-dropdown a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: MontserratLight, 'Segol UI', 'sans-serif';
+    font-weight: lighter;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.navbar {
+    width: 100%;
+    height: 60px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    overflow: hidden;
+    gap: 20px;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 16px;
+    transition: color 0.3s ease;
+}
+
+.menu a.active {
+    color: yellow;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    color: yellow;
+}
+
+.cart {
+    margin-left: auto;
+}
+
+.cart-icon {
+    margin-top: 5px;
+    height: 25px;
+    width: 25px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.orders {
+    margin-left: 20px;
+}
+
+.cart-icon:hover {
+    transform: scale(1.2);
+}
+
+.cart-link {
+    position: relative;
+    display: inline-block;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 5px;
+    border-radius: 5px;
+    line-height: 1;
+    min-width: 18px;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.footerImage,
+.description,
+.menu2 {
+    padding: 20px;
+    max-width: 100%;
+}
+
+.footerImage {
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.description {
+    width: 350px;
+    margin: 0 20px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.5;
+    color: white;
+    font-family: Sansation, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu2 {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.menuList {
+    list-style: none;
+    padding: 0 50px;
+    margin: 0;
+    column-count: 2;
+    column-gap: 50px;
+    font-size: 18px;
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.menuList li {
+    break-inside: avoid;
+    padding: 15px 0;
+    text-align: center;
+
+}
+
+.menuList li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menuList li a:hover {
+    color: yellow;
+}
+
+.contact {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px 50px;
+    color: white;
+    font-family: Sansation, sans-serif;
+    background-color: #333;
+    gap: 10px;
+    text-align: center;
+}
+
+.phone,
+.email,
+.address {
+    width: 100%;
+}
+
+.phone a {
+    font-size: 35px;
+    font-weight: bolder;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+}
+
+.email a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+.contact .address a {
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+}
+
+.contact .address li {
+    list-style: none;
+}
+
+.contact a:hover {
+    color: yellow;
+    text-decoration: underline;
+}
+
+.copyright {
+    margin: 0 30px;
+    width: 100%;
+    border-top: 1px solid white;
+    text-align: center;
+    font-family: sans-serif;
+    color: white;
+}
+
+@media (max-width: 800px) {
+    .footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footerImage,
+    .description,
+    .menu2 {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .description {
+        margin: 10px;
+    }
+
+    .menuList {
+        column-count: auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .menuList li {
+        padding: 5px 10px;
+        text-align: center;
+    }
+}

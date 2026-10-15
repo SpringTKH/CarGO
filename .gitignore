@@ -1,0 +1,21 @@
+# Environments and dependencies
+.venv/
+venv/
+ENV/
+env/
+
+# Environment configurations and secret files
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs and databases
+*.log
+*.sqlite
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store

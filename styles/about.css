@@ -1,0 +1,179 @@
+main {
+    padding: 20px 30px;
+}
+
+.about-header {
+    justify-content: center;
+    text-align: center;
+    padding: 20px 230px;
+}
+
+.about-header h1 {
+    font-family: Sansation;
+    font-weight: bolder;
+    font-size: 65px;
+    color: #888000;
+}
+
+.about-header p {
+    font-family: Manrope;
+    font-size: 17px;
+    color: #444;
+    font-weight: 500;
+    letter-spacing: -0.4px;
+}
+
+.about-data {
+    justify-content: center;
+    text-align: center;
+}
+
+.about-data h2 {
+    padding: 30px 0 10px 0;
+    font-family: Sansation;
+    font-weight: bolder;
+    font-size: 35px;
+    color: #111;
+}
+
+.data-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 20px 5px 20px;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+.content-section {
+    display: block;
+    margin: 5px 10px;
+}
+
+.data-image img {
+    max-height: 110px;
+}
+
+.data-desc {
+    padding: 0 20px;
+    font-family: Montserrat;
+    font-size: 17px;
+    color: #111;
+    letter-spacing: -0.35px;
+}
+
+.about-picture {
+    max-width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    margin: 50px 0px 50px 0;
+    padding: 30px 0px 30px 0;
+}
+
+.about-picture img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    filter: brightness(0.7) blur(1px);
+    clip-path: inset(5px round 25px);
+}
+
+.about-mission,
+.about-values,
+.about-team {
+    margin: 30px 20px 10px 20px;
+    padding: 20px 100px;
+    justify-content: center;
+}
+
+.about-mission h3,
+.about-values h3,
+.about-team h3 {
+    font-family: Sansation;
+    font-size: 32px;
+    text-align: center;
+    margin: 20px 0 30px 0;
+}
+
+.about-mission p,
+.about-team p {
+    font-family: Manrope;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: justify;
+    padding: 5px 80px;
+    letter-spacing: -0.4px;
+}
+
+.about-values li {
+    font-family: Manrope;
+    font-size: 17px;
+    font-weight: 500;
+    text-align: justify;
+    margin: 5px 100px;
+    padding: 0px 25px 10px 25px;
+    letter-spacing: -0.4px;
+}
+
+.about-values li strong {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.about-team p {
+    text-align: center;
+    font-family: Montserrat;
+}
+
+.about-team-image {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.about-team-image img {
+    max-width: 60%;
+    height: auto;
+    display: block;
+    border-radius: 25px;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.about-members {
+    min-height: 100px;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 20px;
+    padding: 20px 0;
+}
+
+.member {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    padding: 5px 25px;
+}
+
+.member-pfp img {
+    max-height: 200px;
+    border-radius: 50%;
+}
+
+.member-desc {
+    font-family: Manrope;
+}
+
+.member-desc h4 {
+    font-size: 23px;
+    letter-spacing: -0.4px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.member-desc p {
+    font-size: 18px;
+    letter-spacing: -0.4px;
+    margin-top: 0;
+    color: #444;
+}

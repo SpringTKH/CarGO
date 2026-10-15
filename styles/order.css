@@ -1,0 +1,210 @@
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: IBMPlexSans, sans-serif;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 20px 30px;
+    height: calc(100vh - 120px);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.order-summary {
+    flex: 2;
+    padding: 0px 30px;
+    background-color: white;
+    overflow-y: auto;
+}
+
+.order-title {
+    width: 100%; 
+    text-align: center; 
+    font-family: Sansation;
+    font-size: 40px;
+    margin: 15px 0px;
+}
+        
+.order-item {
+    border: 1px solid #ccc;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.row-1, .row-2 {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    align-items: center;
+}
+
+.row-1 {
+    margin-bottom: 5px;
+    padding: 0px 10px;
+}
+
+.row-2 {
+    border-top: 1px dashed #333;
+    padding: 5px 5px;
+    color: #555;
+}
+
+.row-1 .left {
+    font-weight: bold;
+    font-size: 44px;
+    font-family: MontserratLight;
+    color: #999100;
+}
+
+.row-1 .right {
+    width: 15%;
+    text-align: right;
+    font-size: 14px;
+    color: #555;
+}
+
+.row-2 .right {
+    font-weight: bold;
+    color: #2c3e50;
+    font-family: Ubuntu;
+    font-size: 18px;
+}
+        
+.order-total {
+    font-style: italic;
+    font-weight: bold;
+    width: 97%;
+    text-align: right;
+    margin: 20px 20px;
+    font-size: 25px;
+    font-family: Sansation;
+    color: #333;
+}
+       
+.payment-form {
+    flex: 1;
+    padding: 20px;
+    background-color: #eeeeee;
+    overflow-y: auto;
+}
+
+.payment-title {
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    font-family: Sansation;
+    font-size: 25px;
+    color: #888000;
+}
+        
+.form-section {
+    margin-bottom: 10px;
+}
+
+.form-section label {
+    display: block;
+    font-weight: bold;
+    color: black;
+    font-family: Ubuntu;
+}
+
+.form-section input:disabled {
+    color: #666;
+    background-color: #EEEEEE;
+}
+        
+.form-section input:not([type="radio"]) {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.form-section input[type="radio"] {
+    width: auto;
+    scale: 1.1;
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+        
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-option label {
+    font-family: SansationLightItalic;
+    align-items: center;
+}
+
+.form-section label:not(.inline-label) {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.payment-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+}
+
+.submitOrder {
+    width: 100%;
+    padding: 10px 20px;
+    font-family: Sansation;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: yellow;
+    color: #333;
+    border: none;
+    transition: background-color 0.3s ease color 0.3 ease;
+}
+
+.submitOrder:hover {
+    background-color: black;
+    color: yellow;
+}
+
+.submitOrder:disabled {
+    background-color: #ccc;
+    color: #333;
+    cursor: not-allowed;
+    transition: none;
+}
+
+.submitOrder:disabled:hover {
+    background-color: #ccc;
+    color: #333;
+    cursor: not-allowed;
+}
+
+.hidden {
+    display: none;
+}
+
+.error-msg {
+    color: red;
+    font-size: 13px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    display: none;
+}
+
+.readonly-text {
+    margin: 3px 0;
+    padding-bottom: 5px;
+    color: #333;
+}

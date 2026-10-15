@@ -1,0 +1,47 @@
+.flash-overlay,
+.flash-overlay-delete,
+.flash-overlay-manage {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 15px 20px;
+    border-radius: 3px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 90%;
+    width: fit-content;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: Ubuntu;
+}
+
+.flash-overlay {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-overlay-delete {
+    background-color: #edd4d4;
+    color: #571515;
+    border: 1px solid #e6c3c3;
+}
+
+.flash-overlay-manage {
+    background-color: #ede8d4;
+    color: #574115;
+    border: 1px solid #ede8d4;
+}
+
+
+.flash-close {
+    margin-left: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555555;
+    font-size: 20px;
+}

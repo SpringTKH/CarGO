@@ -1,0 +1,140 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/BookingBG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.background-overlay {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 1000px;
+    overflow: hidden;
+}
+
+.column-left,
+.column-right {
+    padding: 24px;
+}
+
+.column-left {
+    background-color: #222;
+}
+
+.column-left h2 {
+    margin-top: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: yellow;
+    font-family: Sansation;
+}
+
+.column-left img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.car-info {
+    padding-right: 10px;
+    display: flex;
+    font-weight: 400;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-box {
+    font-family: MontserratLight;
+    display: flex;
+    align-items: center;
+    gap: 0px 5px;
+    padding-right: 15px;
+    padding-left: 5px;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.info-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.price-box {
+    font-size: 1.75rem;
+    font-weight: bold;
+    font-family: Sansation;
+    color: #AAA200;
+    font-style: italic;
+}
+
+.input-group {
+    margin-bottom: 12px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-family: Ubuntu;
+    padding-left: 2px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.add-to-cart-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background-color: #999100;
+    font-size: 16px;
+    border: none;
+    font-family: Sansation;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+    background-color: black;
+    color: yellow;
+}

@@ -1,0 +1,49 @@
+@font-face {
+    font-family: Sansation;
+    src: url("../fonts/Sansation-Regular.ttf");
+}
+
+@font-face {
+    font-family: Orbitron;
+    src: url("../fonts/Orbitron-Regular.ttf");
+}
+
+@font-face {
+    font-family: SansationLightItalic;
+    src: url("../fonts/Sansation-LightItalic.ttf");
+}
+
+@font-face {
+    font-family: MontserratLight;
+    src: url("../fonts/Montserrat-Light.ttf");
+}
+
+@font-face {
+    font-family: Ubuntu;
+    src: url("../fonts/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+    font-family: IBMPlexSans;
+    src: url("../fonts/IBMPlexSans-VariableFont_wdth,wght.ttf");
+}
+
+@font-face {
+    font-family: OleoScript;
+    src: url("../fonts/OleoScript-Regular.ttf");
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url("../fonts/Montserrat-Regular.ttf");
+}
+
+@font-face {
+    font-family: DMSans;
+    src: url("../fonts/DMSans-VariableFont_opsz\,wght.ttf");
+}
+
+@font-face {
+    font-family: Manrope;
+    src: url("../fonts/Manrope-VariableFont_wght.ttf");
+}

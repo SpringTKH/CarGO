@@ -1,0 +1,178 @@
+body {
+    background-image: url('../images/CartBG.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.main-content {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+}
+
+.cart-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Sansation', sans-serif;
+}
+
+#deleteBtn {
+    font-family: Montserrat;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-left: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, font-weight 0.3s ease;
+    background-color: maroon;
+}
+
+#deleteBtn:disabled {
+    color: #555;
+    background-color: #ccc;
+    cursor: not-allowed;
+    transition: none;
+}
+
+#deleteBtn:hover:not(:disabled) {
+    background-color: black;
+    color: red;
+    transform: scale(1.1);
+    font-weight: bolder;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #f0f0f0;
+    text-align: center;
+    color: #333;
+}
+
+td {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    text-align: right;
+}
+
+#dateOrBtn {
+    text-align: center;
+}
+
+#str {
+    text-align: left;
+}
+
+.cart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
+.addition_payment {
+    font-size: 15px;
+    font-style: italic;
+    font-family: Sansation;
+    color: #777;
+}
+
+.total-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+}
+
+.empty-cart-message {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin-top: 20px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #333;
+    padding: 10px 20px 40px 20px;
+    border-radius: 4px;
+    color: yellow;
+    font-family: Ubutu;
+    text-align: center;
+    justify-content: center;
+}
+
+.modal-header h2 {
+    padding: 5px 20px;
+    font-family: Sansation;
+    margin-bottom: 7px;
+}
+
+.modal-header p {
+    padding: 0 30px;
+    font-family: Montserrat;
+    color: white;
+}
+
+#confirmDeleteBtn {
+    border: none;
+    border-radius: 3px;
+    background-color: #999100;
+    color: white;
+    font-size: 18px;
+    font-family: IBMPlexSans;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease;
+}
+
+#confirmDeleteBtn:hover {
+    font-weight: bolder;
+    background-color: black;
+    color: yellow;
+    transform: scale(1.15);
+}
+
+.info-message {
+    margin-top: 20px;
+    padding: 10px;
+    background: #f9e6e6;
+    color: #b30000;
+    border: none;
+    border-radius: 5px;
+    font-family: Montserrat;
+    font-style: italic;
+}

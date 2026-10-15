@@ -1,0 +1,490 @@
+.car-filter-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 15px 10px 0 10px;
+}
+
+.filter-sidebar {
+    flex: 0 0 auto;
+    min-width: 300px;
+    padding: 15px 15px 30px 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: Sansation, sans-serif;
+    margin-top: 20px;
+    margin-right: 10px;
+    height: auto;
+    align-self: flex-start;
+}
+
+.filter-title {
+    width: 100%;
+    font-family: MontserratLight;
+    border-bottom: 2px solid #888;
+    vertical-align: center;
+    margin-top: 0;
+    padding: 10px 15px;
+    color: #888000;
+    font-size: 28px;
+}
+
+.car-list-content {
+    flex: 3;
+}
+
+.filter-group {
+    padding: 0px 10px;
+    gap: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.filter-group h3 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.filter-group .toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1em;
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    margin-left: 10px;
+    color: #555;
+}
+
+.filter-content {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.4s ease;
+    padding-bottom: 0;
+}
+
+.filter-group .filter-content {
+    display: block;
+    margin-top: 10px;
+}
+
+.filter-button {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 25px 0px 5px 0px;
+}
+
+.filter-group.closed h3 {
+    margin-bottom: 0;
+}
+
+.filter-group input {
+    cursor: pointer;
+}
+
+input[type="range"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 60%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #AAA200;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: #666600;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 50%;
+    background-color: #AAA200;
+    cursor: pointer;
+}
+
+output {
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+#applyBtn,
+#resetBtn {
+    border: none;
+    padding: 7px 15px;
+    font-size: 16px;
+    font-family: Ubuntu;
+    color: white;
+    transition: background-color 0.3s ease, color 0.3s ease,
+        transform 0.3s ease, font-weight 0.3s ease;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#applyBtn {
+    background-color: #999100;
+}
+
+#resetBtn {
+    background-color: maroon;
+}
+
+#applyBtn:hover,
+#resetBtn:hover {
+    background-color: #333;
+    color: yellow;
+    transform: scale(1.1);
+    font-weight: bold;
+}
+
+.car-list-content {
+    margin-top: 20px;
+}
+
+.car-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #bbb;
+    margin-bottom: 20px;
+    padding: 10px 10px;
+    font-family: MontserratLight;
+    color: #555;
+}
+
+.car-list-summary {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.car-sort-form {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    gap: 8px;
+}
+
+.car-sort-form select {
+    padding: 4px 8px;
+    font-size: 14px;
+    border-radius: 0px;
+    font-family: MontserratLight;
+}
+
+.car-bar {
+    display: flex;
+    width: 900px;
+    margin-bottom: 15px;
+    aspect-ratio: 4.3 / 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.car-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.car-image img {
+    max-height: 90%;
+    max-width: 90%;
+    border-radius: 1px;
+    object-fit: contain;
+}
+
+.car-details {
+    flex: 2;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.car-details .row {
+    margin-bottom: 3px;
+}
+
+.car-name {
+    font-size: 30px;
+    padding-top: 8px;
+    font-weight: bold;
+    color: #888000;
+    font-family: Sansation;
+}
+
+.car-info {
+    font-family: MontserratLight;
+    display: flex;
+    gap: 15px;
+    font-weight: 400;
+    align-items: center;
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-right: 15px;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.info-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.car-conditions {
+    background-color: #EEEEEE;
+    padding: 7px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 10px;
+    font-family: MontserratLight;
+    color: #333;
+}
+
+.cond-box {
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.car-rating {
+    font-family: Ubuntu;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    font-size: 15px;
+    color: #888;
+    font-weight: 500;
+}
+
+#ratingSection {
+    margin-bottom: 2px;
+}
+
+.rate-now {
+    margin-left: 15px;
+    font-family: Ubuntu;
+    padding: 3px 8px;
+    font-size: 15px;
+    background-color: #af5d0a;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.rate-now:hover {
+    background-color: #333;
+    color: yellow;
+    transform: scale(1.2);
+}
+
+.car-price {
+    flex: 0.7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 10px;
+}
+
+.price,
+.per-day {
+    width: 90%;
+    text-align: right;
+    padding-right: 7px;
+}
+
+.car-price .price {
+    font-size: 1.75rem;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #AAA200;
+    font-style: italic;
+}
+
+.car-price .per-day {
+    padding-bottom: 30px;
+    font-size: 0.9rem;
+    color: #888;
+    font-family: Orbitron;
+    font-style: italic;
+}
+
+.book-now {
+    padding: 8px 14px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: white;
+    background-color: #999100;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.book-now:hover {
+    background-color: black;
+    color: yellow;
+}
+
+.car-pagination-wrapper {
+    position: relative;
+}
+
+.car-page-item {
+    display: none;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px auto;
+}
+
+.pagination-controls button {
+    font-size: 35px;
+    padding: 1px 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #999100;
+    border: none;
+    font-family: MontSerratLight;
+    font-weight: bold;
+    transition: transform 0.3s ease, font-weight 0.3s ease;
+}
+
+.pagination-controls button:hover {
+    transform: scale(1.4);
+    font-weight: bolder;
+}
+
+#pageIndicator {
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #555;
+    font-family: MontserratLight;
+}
+
+.rating-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.rating-popup {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    width: 350px;
+    position: relative;
+    text-align: center;
+    font-family: Ubuntu;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+}
+
+.rating-title {
+    margin: 15px 5px;
+    font-size: 25px;
+    color: #333;
+}
+
+.star-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+    scale: 1.2;
+}
+
+.star {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.star.hover,
+.star.selected {
+    color: gold;
+}
+
+.submit-rating-btn {
+    padding: 6px 15px;
+    font-size: 1rem;
+    background-color: #999100;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-rating-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

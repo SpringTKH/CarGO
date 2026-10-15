@@ -1,0 +1,145 @@
+body {
+    background-image: url('../images/OrderBG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.main-content {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+}
+
+.order-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Sansation', sans-serif;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+}
+
+.empty-order-message {
+    text-align: center;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+#num {
+    text-align: right;
+}
+
+#str {
+    text-align: left;
+}
+
+.order-btn {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    margin: 0 5px;
+    padding: 7px;
+    display: inline-block;
+    text-decoration: none;
+    font-family: Montserrat;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, font-weight 0.3s ease;
+}
+
+#review {
+    background-color: #999100;
+}
+
+#manage {
+    background-color: #995500;
+}
+
+#cancel {
+    background-color: maroon;
+}
+
+#review:hover,
+#manage:hover,
+#cancel:hover {
+    background-color: black;
+    transform: scale(1.1);
+    font-weight: 900;
+}
+
+#review:hover,
+#manage:hover {
+    color: yellow;
+}
+
+#cancel:hover {
+    color: red;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #333;
+    padding: 10px 20px 40px 20px;
+    border-radius: 4px;
+    color: yellow;
+    font-family: Ubutu;
+    text-align: center;
+    justify-content: center;
+}
+
+.modal-header h2 {
+    padding: 5px 20px;
+    font-family: Sansation;
+}
+
+#confirmDeleteBtn {
+    border: none;
+    border-radius: 3px;
+    background-color: #999100;
+    color: white;
+    font-size: 18px;
+    font-family: IBMPlexSans;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease;
+    padding: 5px 7px;
+}
+
+#confirmDeleteBtn:hover {
+    font-weight: bolder;
+    background-color: black;
+    color: yellow;
+    transform: scale(1.15);
+}
