@@ -76,12 +76,34 @@
                     <?php if ($order['payment_method'] === 'card'): ?>
                         <div class="payment-desc">
                             <p><strong>Cardholder Name: </strong> <?= htmlspecialchars($order['cardholder_name']) ?></p>
-                            <p><strong>Card Number: </strong> <?= htmlspecialchars($order['card_number']) ?></p>
+                            <?php
+                                $raw_card = trim((string)($order['card_number'] ?? ''));
+                                $card_digits = preg_replace('/\D/', '', $raw_card);
+                                if (strlen($card_digits) >= 4) {
+                                    $card_display = '**** **** **** ' . substr($card_digits, -4);
+                                } elseif (strlen($card_digits) > 0) {
+                                    $card_display = '**** **** **** ' . str_pad($card_digits, 4, '*', STR_PAD_LEFT);
+                                } else {
+                                    $card_display = '**** **** **** ****';
+                                }
+                            ?>
+                            <p><strong>Card Number: </strong> <?= htmlspecialchars($card_display) ?> <em>(Mock Payment)</em></p>
                         </div>
                     <?php elseif ($order['payment_method'] === 'bank'): ?>
                         <div class="payment-desc">
                             <p><strong>Bank Name: </strong> <?= htmlspecialchars($order['bank_name']) ?></p>
-                            <p><strong>Bank Account: </strong> <?= htmlspecialchars($order['bank_account']) ?></p>
+                            <?php
+                                $raw_bank = trim((string)($order['bank_account'] ?? ''));
+                                $bank_digits = preg_replace('/\D/', '', $raw_bank);
+                                if (strlen($bank_digits) >= 4) {
+                                    $bank_display = '******' . substr($bank_digits, -4);
+                                } elseif (strlen($bank_digits) > 0) {
+                                    $bank_display = '******' . str_pad($bank_digits, 4, '*', STR_PAD_LEFT);
+                                } else {
+                                    $bank_display = '**********';
+                                }
+                            ?>
+                            <p><strong>Bank Account: </strong> <?= htmlspecialchars($bank_display) ?> <em>(Mock Transfer)</em></p>
                         </div>
                     <?php endif; ?>
 

@@ -106,23 +106,21 @@
                 </div>
             </div>
             <div class="form-section hidden" id="cardFields">
-                <label for="card_number">Card Number</label>
-                <input type="text" name="card_number" id="card_number" class="card-required">
-                <span class="error-msg" id="error_card_number"></span>
-
+                <p style="font-size: 13px; color: #555; margin-bottom: 8px;">
+                    <em>Simulation Mode: Enter mock card details for testing. Do not use real credentials.</em>
+                </p>
                 <label for="card_name">Cardholder Name</label>
-                <input type="text" name="card_name" id="card_name" class="card-required">
+                <input type="text" name="card_name" id="card_name" class="card-required" placeholder="e.g. John Doe">
                 <span class="error-msg" id="error_card_name"></span>
 
-                <label for="cvv">CVV</label>
-                <input type="password" name="cvv" id="cvv" class="card-required">
-                <span class="error-msg" id="error_card_cvv"></span>
-
-                <label for="expiry">Expiry Date (MM/YY)</label>
-                <input type="month" name="expiry" id="expiry" class="card-required">
-                <span class="error-msg" id="error_card_exdate"></span>
+                <label for="card_number">Card Number (Mock / Test)</label>
+                <input type="text" name="card_number" id="card_number" class="card-required" placeholder="e.g. 4111 2222 3333 4444" maxlength="19">
+                <span class="error-msg" id="error_card_number"></span>
             </div>
             <div class="form-section hidden" id="bankFields">
+                <p style="font-size: 13px; color: #555; margin-bottom: 8px;">
+                    <em>Simulation Mode: Select a bank and enter a mock account number for testing.</em>
+                </p>
                 <label for="bank_name">Bank Name</label>
                 <select name="bank_name" id="bank_name" class="bank-required">
                     <option value="">-- Please select a bank --</option>
@@ -135,16 +133,13 @@
                     <option value="Hong Leong Bank">Hong Leong Bank</option>
                     <option value="Maybank">Maybank</option>
                     <option value="Public Bank">Public Bank</option>
-                    <option value="RHB Bank">PHB Bank</option>
+                    <option value="RHB Bank">RHB Bank</option>
                     <option value="Other">Other</option>
                 </select>
                 <span class="error-msg" id="error_bank_name"></span>
 
-                <label for="bank_account">Bank Account</label>
-                <input type="text" name="bank_account" id="bank_account" class="bank-required">
-
-                <label for="bank_password">Password</label>
-                <input type="password" name="bank_password" id="bank_password" class="bank-required">
+                <label for="bank_account">Bank Account Number (Mock / Test)</label>
+                <input type="text" name="bank_account" id="bank_account" class="bank-required" placeholder="e.g. 1234567890">
             </div>
 
             <button type="submit" class="submitOrder" id="submitBtn" disabled>Submit Order</button>
@@ -161,15 +156,12 @@
 
         const cardInputs = [
             document.getElementById("card_number"),
-            document.getElementById("card_name"),
-            document.getElementById("cvv"),
-            document.getElementById("expiry")
+            document.getElementById("card_name")
         ];
 
         const bankInputs = [
             document.getElementById("bank_name"),
-            document.getElementById("bank_account"),
-            document.getElementById("bank_password")
+            document.getElementById("bank_account")
         ];
 
         const paymentRadios = document.querySelectorAll('input[name="payment_method"]');

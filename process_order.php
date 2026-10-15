@@ -1,5 +1,7 @@
 <?php
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
     require_once "include/connection.php";
 
     if (!isset($_SESSION['user_id'])) {
@@ -8,11 +10,64 @@
     }
 
     $user_id = $_SESSION['user_id'];
-    $phone = $_POST['phone'] ?? '';
-    $payment_method = $_POST['payment_method'] ?? '';
+    $phone = trim($_POST['phone'] ?? '');
+    $payment_method = trim($_POST['payment_method'] ?? '');
 
     if (!$phone || !$payment_method) {
         die("Missing required fields.");
+    }
+
+    // Phase 2.1: Server-side validation of payment method and required fields
+    $allowed_methods = ['card', 'bank', 'cash'];
+    if (!in_array($payment_method, $allowed_methods, true)) {
+        die("Invalid payment method.");
+    }
+
+    // Never persist full card numbers, CVVs, or banking credentials in storage
+    $card_number = null;
+    $cardholder_name = null;
+    $bank_name = null;
+    $bank_account = null;
+
+    if ($payment_method === 'card') {
+        $cardholder_name = trim($_POST['card_name'] ?? '');
+        if ($cardholder_name === '') {
+            die("Cardholder name is required.");
+        }
+
+        $raw_card = preg_replace('/\D/', '', $_POST['card_number'] ?? '');
+        // Validate mock card number format: standard cards have 12 to 19 digits
+        if (!preg_match('/^\d{12,19}$/', $raw_card)) {
+            die("Invalid or malformed card number.");
+        }
+
+        $last4 = substr($raw_card, -4);
+        $card_number = '**** **** **** ' . $last4;
+    } elseif ($payment_method === 'bank') {
+        $bank_name = trim($_POST['bank_name'] ?? '');
+        $allowed_banks = [
+            'Alliance Bank', 'Bank Islam', 'Bank Muamalat', 'Bank Rakyat',
+            'Bank Simpanan Nasional', 'CIMB', 'Hong Leong Bank', 'Maybank',
+            'Public Bank', 'RHB Bank', 'Other'
+        ];
+        if (!in_array($bank_name, $allowed_banks, true)) {
+            die("Invalid bank selected.");
+        }
+
+        $raw_account = preg_replace('/\D/', '', $_POST['bank_account'] ?? '');
+        // Validate mock bank account format: typically 5 to 20 digits
+        if (!preg_match('/^\d{5,20}$/', $raw_account)) {
+            die("Invalid or malformed bank account number.");
+        }
+
+        $last4 = substr($raw_account, -4);
+        $bank_account = '******' . $last4;
+    } elseif ($payment_method === 'cash') {
+        // Cash payment simulation requires no card or bank metadata
+        $card_number = null;
+        $cardholder_name = null;
+        $bank_name = null;
+        $bank_account = null;
     }
 
     $stmt = $conn->prepare("SELECT username, first_name, surname, email FROM users WHERE user_id = ?");
@@ -21,12 +76,11 @@
     $user = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
-    $full_name = $user['first_name'] . ' ' . $user['surname'];
+    if (!$user) {
+        die("User not found.");
+    }
 
-    $card_number = $_POST['card_number'] ?? null;
-    $cardholder_name = $_POST['card_name'] ?? null;
-    $bank_name = $_POST['bank_name'] ?? null;
-    $bank_account = $_POST['bank_account'] ?? null;
+    $full_name = $user['first_name'] . ' ' . $user['surname'];
 
     $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
