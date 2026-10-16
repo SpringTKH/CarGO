@@ -126,6 +126,9 @@
 
                     $new_user_id = mysqli_insert_id($conn);
 
+                    // Phase 2.4: Session fixation defense
+                    session_regenerate_id(true);
+
                     $_SESSION["loggedin"] = true;
                     $_SESSION["user_id"] = $new_user_id;
                     $_SESSION["username"] = $username;
