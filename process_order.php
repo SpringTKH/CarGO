@@ -77,9 +77,22 @@
     }
 
     $stmt = $conn->prepare("SELECT username, first_name, surname, email FROM users WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $user = $stmt->get_result()->fetch_assoc();
+    if (!$stmt) {
+        error_log("User lookup prepare failed: " . $conn->error);
+        die("An error occurred while processing your order. Please try again.");
+    }
+    if (!$stmt->bind_param("i", $user_id) || !$stmt->execute()) {
+        error_log("User lookup execute failed: " . $stmt->error);
+        $stmt->close();
+        die("An error occurred while processing your order. Please try again.");
+    }
+    $user_result = $stmt->get_result();
+    if (!$user_result) {
+        error_log("User get_result failed: " . $stmt->error);
+        $stmt->close();
+        die("An error occurred while processing your order. Please try again.");
+    }
+    $user = $user_result->fetch_assoc();
     $stmt->close();
 
     if (!$user) {
@@ -88,12 +101,31 @@
 
     $full_name = $user['first_name'] . ' ' . $user['surname'];
 
+    // Retrieve current user's cart items
     $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $cart_items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    if (!$stmt) {
+        error_log("Cart retrieval prepare failed: " . $conn->error);
+        die("An error occurred while processing your order. Please try again.");
+    }
+    if (!$stmt->bind_param("i", $user_id) || !$stmt->execute()) {
+        error_log("Cart retrieval execute failed: " . $stmt->error);
+        $stmt->close();
+        die("An error occurred while processing your order. Please try again.");
+    }
+    $cart_result = $stmt->get_result();
+    if (!$cart_result) {
+        error_log("Cart get_result failed: " . $stmt->error);
+        $stmt->close();
+        die("An error occurred while processing your order. Please try again.");
+    }
+    $cart_items = $cart_result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
-    
+
+    // Phase 2.3: Explicitly reject an empty cart before starting any transaction
+    if (empty($cart_items)) {
+        die("Your cart is empty.");
+    }
+
     $total_price = 0;
     foreach ($cart_items as $item) {
         $total_price += $item['final_price'];
@@ -101,48 +133,113 @@
     $addition_payment = 0;
     $total_price += $addition_payment;
 
-    $stmt = $conn->prepare("INSERT INTO orders 
-        (user_id, username, full_name, email, phone_number, payment_method, card_number, 
-        cardholder_name, bank_name, bank_account, addition_payment, total_price)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    // Phase 2.3: Atomic checkout transaction covering orders, order_items, and cart cleanup
+    $transaction_started = false;
 
+    try {
+        if (!$conn->begin_transaction()) {
+            throw new Exception("Failed to start checkout transaction: " . $conn->error);
+        }
+        $transaction_started = true;
 
-    $stmt->bind_param("isssssssssdd", $user_id, $user['username'], 
-        $full_name, $user['email'], $phone, $payment_method, $card_number, 
-        $cardholder_name, $bank_name, $bank_account, $addition_payment, $total_price);
-    $stmt->execute();
-    $order_id = $stmt->insert_id;
-    $stmt->close();
+        // Step 1: Insert order row
+        $order_stmt = $conn->prepare("INSERT INTO orders
+            (user_id, username, full_name, email, phone_number, payment_method, card_number,
+            cardholder_name, bank_name, bank_account, addition_payment, total_price)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt = $conn->prepare("INSERT INTO order_items 
-    (order_id, car_id, car_name, single_price, quantity, begin_date, end_date, rental_days, final_price)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if (!$order_stmt) {
+            throw new Exception("Order prepare failed: " . $conn->error);
+        }
 
-    foreach ($cart_items as $index => $item) {
-        $car_id = $item['car_id'];
-        $car_name = $item['car_name'];
-        $single_price = (float)$item['single_price'];
-        $quantity = (int)$item['quantity'];
-        $begin_date = $item['begin_date'];
-        $end_date = $item['end_date'];
-        $rental_days = (int)$item['rental_days'];
-        $final_price = (float)$item['final_price'];
+        if (!$order_stmt->bind_param("isssssssssdd", $user_id, $user['username'],
+            $full_name, $user['email'], $phone, $payment_method, $card_number,
+            $cardholder_name, $bank_name, $bank_account, $addition_payment, $total_price)) {
+            $err = $order_stmt->error;
+            $order_stmt->close();
+            throw new Exception("Order bind_param failed: " . $err);
+        }
 
-        $begin_date_formatted = date('Y-m-d', strtotime($begin_date));
-        $end_date_formatted = date('Y-m-d', strtotime($end_date));
+        if (!$order_stmt->execute()) {
+            $err = $order_stmt->error;
+            $order_stmt->close();
+            throw new Exception("Order execute failed: " . $err);
+        }
 
-        $stmt->bind_param("iisdissid", $order_id, $car_id, $car_name, $single_price, $quantity,
-                        $begin_date_formatted, $end_date_formatted, $rental_days, $final_price);
+        $order_id = (int)$order_stmt->insert_id;
+        $order_stmt->close();
 
-        $stmt->execute();
+        if ($order_id <= 0) {
+            throw new Exception("Invalid order ID retrieved: " . $order_id);
+        }
+
+        // Step 2: Insert order items
+        $item_stmt = $conn->prepare("INSERT INTO order_items
+            (order_id, car_id, car_name, single_price, quantity, begin_date, end_date, rental_days, final_price)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        if (!$item_stmt) {
+            throw new Exception("Order items prepare failed: " . $conn->error);
+        }
+
+        foreach ($cart_items as $item) {
+            $car_id = (int)$item['car_id'];
+            $car_name = $item['car_name'];
+            $single_price = (float)$item['single_price'];
+            $quantity = (int)$item['quantity'];
+            $begin_date = $item['begin_date'];
+            $end_date = $item['end_date'];
+            $rental_days = (int)$item['rental_days'];
+            $final_price = (float)$item['final_price'];
+
+            $begin_date_formatted = date('Y-m-d', strtotime($begin_date));
+            $end_date_formatted = date('Y-m-d', strtotime($end_date));
+
+            if (!$item_stmt->bind_param("iisdissid", $order_id, $car_id, $car_name, $single_price, $quantity,
+                            $begin_date_formatted, $end_date_formatted, $rental_days, $final_price)) {
+                $err = $item_stmt->error;
+                $item_stmt->close();
+                throw new Exception("Order item bind_param failed: " . $err);
+            }
+
+            if (!$item_stmt->execute()) {
+                $err = $item_stmt->error;
+                $item_stmt->close();
+                throw new Exception("Order item execute failed: " . $err);
+            }
+        }
+        $item_stmt->close();
+
+        // Step 3: Clear current user's cart
+        $cart_delete_stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
+        if (!$cart_delete_stmt) {
+            throw new Exception("Cart delete prepare failed: " . $conn->error);
+        }
+
+        if (!$cart_delete_stmt->bind_param("i", $user_id) || !$cart_delete_stmt->execute()) {
+            $err = $cart_delete_stmt->error;
+            $cart_delete_stmt->close();
+            throw new Exception("Cart delete execute failed: " . $err);
+        }
+        $cart_delete_stmt->close();
+
+        // Step 4: Commit transaction
+        if (!$conn->commit()) {
+            throw new Exception("Transaction commit failed: " . $conn->error);
+        }
+        $transaction_started = false;
+
+    } catch (Throwable $e) {
+        error_log("Checkout transaction failed: " . $e->getMessage());
+        if ($transaction_started) {
+            if (!$conn->rollback()) {
+                error_log("Transaction rollback failed: " . $conn->error);
+            }
+        }
+        die("An error occurred while processing your order. Please try again.");
     }
-    $stmt->close();
 
-    $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $stmt->close();
-
+    // Step 5: Post-commit redirect
     header("Location: order_receipt.php?order_id=" . $order_id);
     exit;
 ?>
