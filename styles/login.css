@@ -10,7 +10,7 @@ body {
 }
 
 .login-page {
-    background-image: url('../images/loginBG.jpg');
+    background-image: url('../images/LoginBG.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url('../images/loginBG.jpg');
+    background-image: url('../images/LoginBG.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

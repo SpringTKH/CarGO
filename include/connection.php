@@ -37,7 +37,9 @@ if (!function_exists('loadEnvFile')) {
 
                 // Set in environment if not already defined
                 if (getenv($key) === false) {
-                    putenv("{$key}={$value}");
+                    if (function_exists('putenv')) {
+                        @putenv("{$key}={$value}");
+                    }
                     $_ENV[$key] = $value;
                     $_SERVER[$key] = $value;
                 }
@@ -51,11 +53,11 @@ $envFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
 loadEnvFile($envFilePath);
 
 // Retrieve configuration from environment variables with fallbacks
-$database_host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : ($_ENV['DB_HOST'] ?? '');
-$database_port = getenv('DB_PORT') !== false ? intval(getenv('DB_PORT')) : intval($_ENV['DB_PORT'] ?? 3306);
-$database_name = getenv('DB_NAME') !== false ? getenv('DB_NAME') : ($_ENV['DB_NAME'] ?? '');
-$username      = getenv('DB_USER') !== false ? getenv('DB_USER') : ($_ENV['DB_USER'] ?? '');
-$password      = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($_ENV['DB_PASS'] ?? '');
+$database_host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : ($_ENV['DB_HOST'] ?? ($_SERVER['DB_HOST'] ?? ''));
+$database_port = getenv('DB_PORT') !== false ? intval(getenv('DB_PORT')) : intval($_ENV['DB_PORT'] ?? ($_SERVER['DB_PORT'] ?? 3306));
+$database_name = getenv('DB_NAME') !== false ? getenv('DB_NAME') : ($_ENV['DB_NAME'] ?? ($_SERVER['DB_NAME'] ?? ''));
+$username      = getenv('DB_USER') !== false ? getenv('DB_USER') : ($_ENV['DB_USER'] ?? ($_SERVER['DB_USER'] ?? ''));
+$password      = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($_ENV['DB_PASS'] ?? ($_SERVER['DB_PASS'] ?? ''));
 
 // Validate required database configuration settings
 if (empty($database_host) || empty($database_name) || $username === '') {
