@@ -149,6 +149,11 @@ body {
     margin-bottom: 15px;
 }
 
+input::-ms-reveal,
+input::-ms-clear {
+    display: none !important;
+}
+
 .toggle-password {
     position: absolute;
     right: 10px;
@@ -159,6 +164,10 @@ body {
     color: #444;
     user-select: none;
     line-height: 1;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
 }
 
 .login-note {

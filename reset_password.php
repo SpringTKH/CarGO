@@ -99,9 +99,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Reset Password</title>
-    <link rel="stylesheet" href="styles/reset.css">
+    <link rel="stylesheet" href="styles/reset.css?v=1.1">
     <link rel="stylesheet" href="styles/font.css">
     <link rel="icon" href="images/icon.ico" type="image/x-icon">
+    <style>
+        /* Suppress Microsoft Edge native password reveal and clear controls */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <div class="reset-page">
@@ -124,7 +131,7 @@
                 <label for="current_password">Current Password</label>
                 <div class="password-wrapper">
                     <input type="password" name="current_password" id="current_password" required placeholder="Enter current password">
-                    <div class="toggle-password" onclick="togglePassword('current_password', this)" id="toggleCurrent">◉</div>
+                    <button type="button" class="toggle-password" id="toggleCurrent" onclick="togglePassword('current_password', this)" aria-label="Toggle current password visibility">◉</button>
                 </div>
                 <?php if (!empty($current_password_err)): ?>
                     <span style="color:red; font-family:sans-serif; font-size:12px; display:block; margin-top:-10px; margin-bottom:10px;"><?php echo htmlspecialchars($current_password_err); ?></span>
@@ -135,7 +142,7 @@
                     <input type="password" name="new_password" id="new_password"
                         pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}"
                         placeholder="At least 8 characters, with numbers, alphabet & symbol required" required>
-                    <div class="toggle-password" onclick="togglePassword('new_password', this)" id="toggleNew">◉</div>
+                    <button type="button" class="toggle-password" id="toggleNew" onclick="togglePassword('new_password', this)" aria-label="Toggle new password visibility">◉</button>
                 </div>
                 <?php if (!empty($new_password_err)): ?>
                     <span style="color:red; font-family:sans-serif; font-size:12px; display:block; margin-top:-10px; margin-bottom:10px;"><?php echo htmlspecialchars($new_password_err); ?></span>
@@ -145,7 +152,7 @@
                 <div class="password-wrapper">
                     <input type="password" name="confirm_password" id="confirm_password"
                         pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}" placeholder="Repeat your new password" required>
-                    <div class="toggle-password" onclick="togglePassword('confirm_password', this)" id="toggleConfirm">◉</div>
+                    <button type="button" class="toggle-password" id="toggleConfirm" onclick="togglePassword('confirm_password', this)" aria-label="Toggle confirm password visibility">◉</button>
                 </div>
                 <?php if (!empty($confirm_password_err)): ?>
                     <span style="color:red; font-family:sans-serif; font-size:12px; display:block; margin-top:-10px; margin-bottom:10px;"><?php echo htmlspecialchars($confirm_password_err); ?></span>
@@ -160,13 +167,21 @@
         </div>
     </div>
     <script>
-        function togglePassword(fieldId, toggleIcon) {
-            const passwordInput = document.getElementById(fieldId);
-            if (!passwordInput) return;
+        function togglePassword(fieldId, toggleBtn) {
+            const input = document.getElementById(fieldId);
+            if (!input) return;
 
-            const isHidden = passwordInput.type === "password";
-            passwordInput.type = isHidden ? "text" : "password";
-            toggleIcon.textContent = isHidden ? "◡" : "◉";
+            const btn = (typeof toggleBtn === "string")
+                ? document.getElementById(toggleBtn)
+                : (toggleBtn || (typeof event !== "undefined" ? event.currentTarget : null));
+
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+
+            if (btn) {
+                btn.textContent = isHidden ? "◡" : "◉";
+                btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+            }
         }
     </script>
 </body>

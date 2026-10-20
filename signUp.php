@@ -154,9 +154,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="styles/signUp.css">
+    <link rel="stylesheet" href="styles/signUp.css?v=1.2">
     <link rel="stylesheet" href="styles/font.css">
     <link rel="icon" href="images/icon.ico" type="image/x-icon">
+    <style>
+        /* Suppress Microsoft Edge native password reveal and clear controls */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <div class="register-page">
@@ -195,7 +202,7 @@
                     <input type="password" name="password" id="password"
                         pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}"
                         placeholder="At least 8 characters, with numbers, alphabet & symbol required" required>
-                    <div class="toggle-password" onclick="togglePassword()" id="toggleIcon">◉</div>
+                    <button type="button" class="toggle-password" id="togglePasswordBtn" onclick="togglePassword('password', this)" aria-label="Toggle password visibility">◉</button>
                 </div>
 
                 <?php if ($confirm_password_err) echo "<p class='error'>$confirm_password_err</p>"; ?>
@@ -203,7 +210,7 @@
                 <div class="password-wrapper">
                     <input type="password" name="confirm_password" id="confirm_password" 
                         pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}" placeholder="Repeat your password" required>
-                    <div class="toggle-password" onclick="togglePassword()" id="toggleIcon">◉</div>
+                    <button type="button" class="toggle-password" id="toggleConfirmPasswordBtn" onclick="togglePassword('confirm_password', this)" aria-label="Toggle confirm password visibility">◉</button>
                 </div>               
 
                 <input type="submit" value="Create Account">
@@ -232,19 +239,21 @@
         </div>
     </div>
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById("password");
-            const confirmInput = document.getElementById("confirm_password");
-            const toggleIcon = document.getElementById("toggleIcon");
+        function togglePassword(fieldId, toggleBtn) {
+            const input = document.getElementById(fieldId);
+            if (!input) return;
 
-            const isHidden = passwordInput.type === "password";
+            const btn = (typeof toggleBtn === "string")
+                ? document.getElementById(toggleBtn)
+                : (toggleBtn || (typeof event !== "undefined" ? event.currentTarget : null));
 
-            passwordInput.type = isHidden ? "text" : "password";
-            if (confirmInput) {
-                confirmInput.type = isHidden ? "text" : "password";
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+
+            if (btn) {
+                btn.textContent = isHidden ? "◡" : "◉";
+                btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
             }
-
-            toggleIcon.textContent = isHidden ? "◡" : "◉";
         }
     </script>
 </body>

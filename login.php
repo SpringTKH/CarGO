@@ -125,9 +125,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
-    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/login.css?v=1.1">
     <link rel="stylesheet" href="styles/font.css">
     <link rel="icon" href="images/icon.ico" type="image/x-icon">
+    <style>
+        /* Suppress Microsoft Edge native password reveal and clear controls */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <div class="login-page">
@@ -155,7 +162,7 @@
                 <label for="password">Password</label>
                 <div class="password-wrapper">
                     <input type="password" name="password" id="password" required>
-                    <div class="toggle-password" onclick="togglePassword()" id="toggleIcon">◉</div>
+                    <button type="button" class="toggle-password" id="togglePasswordBtn" onclick="togglePassword('password', this)" aria-label="Toggle password visibility">◉</button>
                 </div>
 
                 <input type="submit" value="Login">
@@ -168,16 +175,20 @@
         </div>
     </div>
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById("password");
-            const toggleIcon = document.getElementById("toggleIcon");
+        function togglePassword(fieldId, toggleBtn) {
+            const input = document.getElementById(fieldId);
+            if (!input) return;
 
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                toggleIcon.textContent = "◡";
-            } else {
-                passwordInput.type = "password";
-                toggleIcon.textContent = "◉";
+            const btn = (typeof toggleBtn === "string")
+                ? document.getElementById(toggleBtn)
+                : (toggleBtn || (typeof event !== "undefined" ? event.currentTarget : null));
+
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+
+            if (btn) {
+                btn.textContent = isHidden ? "◡" : "◉";
+                btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
             }
         }
     </script>
