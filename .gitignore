@@ -9,6 +9,7 @@ env/
 .env.*
 !.env.example
 *.local
+include/db_config.php
 
 # Logs and databases
 *.log

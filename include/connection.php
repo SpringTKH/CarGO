@@ -48,20 +48,57 @@ if (!function_exists('loadEnvFile')) {
     }
 }
 
-// Locate and load the root .env file
-$envFilePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
-loadEnvFile($envFilePath);
+$serverConfigFile = __DIR__ . DIRECTORY_SEPARATOR . 'db_config.php';
 
-// Retrieve configuration from environment variables with fallbacks
-$database_host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : ($_ENV['DB_HOST'] ?? ($_SERVER['DB_HOST'] ?? ''));
-$database_port = getenv('DB_PORT') !== false ? intval(getenv('DB_PORT')) : intval($_ENV['DB_PORT'] ?? ($_SERVER['DB_PORT'] ?? 3306));
-$database_name = getenv('DB_NAME') !== false ? getenv('DB_NAME') : ($_ENV['DB_NAME'] ?? ($_SERVER['DB_NAME'] ?? ''));
-$username      = getenv('DB_USER') !== false ? getenv('DB_USER') : ($_ENV['DB_USER'] ?? ($_SERVER['DB_USER'] ?? ''));
-$password      = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($_ENV['DB_PASS'] ?? ($_SERVER['DB_PASS'] ?? ''));
+if (file_exists($serverConfigFile)) {
+    // Production configuration source
+    if (!is_file($serverConfigFile) || !is_readable($serverConfigFile)) {
+        die("Database configuration error: Server configuration file is not readable or invalid.");
+    }
 
-// Validate required database configuration settings
-if (empty($database_host) || empty($database_name) || $username === '') {
-    die("Database configuration error: Missing required settings (DB_HOST, DB_NAME, or DB_USER). Please ensure your .env file is configured based on .env.example.");
+    if (!defined('CARGO_APP')) {
+        define('CARGO_APP', true);
+    }
+
+    try {
+        $dbConfig = require $serverConfigFile;
+    } catch (\Throwable $e) {
+        error_log("Database configuration parse error: " . $e->getMessage());
+        die("Database configuration error: Server configuration file could not be parsed safely.");
+    }
+    if (!is_array($dbConfig)) {
+        die("Database configuration error: Server configuration file must return an array.");
+    }
+
+    $database_host = $dbConfig['DB_HOST'] ?? '';
+    $database_port = isset($dbConfig['DB_PORT']) && intval($dbConfig['DB_PORT']) > 0 ? intval($dbConfig['DB_PORT']) : 3306;
+    $database_name = $dbConfig['DB_NAME'] ?? '';
+    $username      = $dbConfig['DB_USER'] ?? '';
+    $password      = $dbConfig['DB_PASS'] ?? '';
+
+    if (empty($database_host) || empty($database_name) || $username === '') {
+        die("Database configuration error: Missing required settings (DB_HOST, DB_NAME, or DB_USER) in server configuration.");
+    }
+} else {
+    // Local development & fallback configuration source (.env)
+    $externalEnv = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . '.env';
+    $rootEnv     = dirname(__DIR__) . DIRECTORY_SEPARATOR . '.env';
+
+    if (@is_file($externalEnv) && @is_readable($externalEnv)) {
+        loadEnvFile($externalEnv);
+    } elseif (@is_file($rootEnv) && @is_readable($rootEnv)) {
+        loadEnvFile($rootEnv);
+    }
+
+    $database_host = getenv('DB_HOST') !== false ? getenv('DB_HOST') : ($_ENV['DB_HOST'] ?? ($_SERVER['DB_HOST'] ?? ''));
+    $database_port = getenv('DB_PORT') !== false ? intval(getenv('DB_PORT')) : intval($_ENV['DB_PORT'] ?? ($_SERVER['DB_PORT'] ?? 3306));
+    $database_name = getenv('DB_NAME') !== false ? getenv('DB_NAME') : ($_ENV['DB_NAME'] ?? ($_SERVER['DB_NAME'] ?? ''));
+    $username      = getenv('DB_USER') !== false ? getenv('DB_USER') : ($_ENV['DB_USER'] ?? ($_SERVER['DB_USER'] ?? ''));
+    $password      = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($_ENV['DB_PASS'] ?? ($_SERVER['DB_PASS'] ?? ''));
+
+    if (empty($database_host) || empty($database_name) || $username === '') {
+        die("Database configuration error: Missing required settings (DB_HOST, DB_NAME, or DB_USER). Please ensure your .env file is configured based on .env.example.");
+    }
 }
 
 // Establish database connection safely without printing credentials on failure
