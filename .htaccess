@@ -1,0 +1,54 @@
+# ==============================================================================
+# CarGO Apache 2.4 Web Server Configuration for InfinityFree / Shared Hosting
+# ==============================================================================
+
+# Disable directory browsing
+Options -Indexes
+
+# ------------------------------------------------------------------------------
+# 1. Block Sensitive Files via URL Rewrite (Returns HTTP 404 Cloak)
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Return 404 Not Found for direct requests to .env and any .env.* variants
+    RewriteRule (^|/)\.env(\..*)?$ - [R=404,L,NC]
+
+    # Block direct browser execution of internal PHP include files (Returns 403)
+    RewriteRule ^include/ - [F,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 2. Block Database Dumps, Backups, Logs & Documentation (Defense-in-Depth)
+# ------------------------------------------------------------------------------
+<FilesMatch "(?i)^(\.git.*|.*\.(sql|md|log|bak|txt))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ------------------------------------------------------------------------------
+# 3. Leverage Browser Caching for Static Assets (Images, Fonts, Media, CSS)
+# ------------------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+    ExpiresByType video/mp4 "access plus 1 month"
+    ExpiresByType font/ttf "access plus 1 month"
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 4. Set Proper MIME Types for Video and Fonts
+# ------------------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4
+    AddType font/ttf .ttf
+</IfModule>
